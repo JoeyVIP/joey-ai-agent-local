@@ -12,56 +12,34 @@
 
 ---
 
-## 隱私與工具使用原則
+## GitHub 素材庫使用方式
 
-### Google Drive MCP 使用規範
-**重要**：使用 Google Drive MCP 時，只讀取用戶明確指定的檔案或資料夾網址。
-- 禁止自行搜尋或瀏覽用戶帳號中的其他內容
-- 不要使用廣泛的搜尋關鍵字去探索帳號內容
-- 如需額外資料，應詢問用戶提供具體的檔案連結或資料夾路徑
+### 素材庫位置
+所有專案素材統一存放於 GitHub：
+`https://github.com/JoeyVIP/joey-agent-assets`
 
-## 撰寫提示詞指引
+### 下載方式
+使用 `gh` CLI 下載專案資料夾：
+```bash
+# 下載整個素材庫
+gh repo clone JoeyVIP/joey-agent-assets
+
+# 或只下載特定專案資料夾
+# 先 clone，再進入對應資料夾
+```
+
+### 撰寫提示詞時的素材引用
 
 當協助用戶撰寫要給 Joey AI Agent 執行的 `.md` 提示詞檔案時：
 
-### Google Drive 參考資料（重要！）
-
-用戶會提供 Google Drive 連結，裡面包含**精選過的完整專案素材**。
-
-**正確做法** ✅
-- 把 Google Drive 連結放在獨立的「參考資料」或「素材來源」區塊
-- 明確說明「請下載整個資料夾的所有檔案」
-- 列出資料夾可能包含的內容類型
-
-**錯誤做法** ❌
-- 把連結當成只是「Logo 下載位置」
-- 寫成「Logo 檔案: PNG 格式，請從以下資料夾下載」
-- 限縮了 Google Drive 的用途
-
-### 錯誤範例（來電司康提示詞）
-
+**正確做法**
 ```markdown
-# ❌ 錯誤寫法 - 把連結限縮成只有 Logo
-- **Logo 檔案**: PNG 格式，請從以下資料夾下載
-  - Google Drive: https://drive.google.com/drive/folders/xxxxx
-```
+## 參考資料
 
-### 正確範例
+所有專案素材請從 GitHub 下載：
+https://github.com/JoeyVIP/joey-agent-assets/tree/main/{專案名稱}
 
-```markdown
-# ✅ 正確寫法 - 強調下載整個資料夾
-## 參考資料（必須下載）
-
-所有專案素材請從以下 Google Drive 資料夾下載：
-https://drive.google.com/drive/folders/xxxxx
-
-**請下載資料夾內的所有檔案**，包含：
-- Logo 和品牌圖片
-- 文案內容和產品介紹
-- 設計參考和規範
-- 其他相關素材
-
-這些都是精選過的參考資料，請在建立網站時全部使用。
+請下載資料夾內的所有檔案作為建站參考。
 ```
 
 ---
