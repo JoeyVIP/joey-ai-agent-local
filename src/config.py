@@ -13,6 +13,10 @@ class Settings(BaseSettings):
     notion_inbox_db_id: str = Field(..., description="Notion Inbox Database ID")
     notion_review_db_id: str = Field(..., description="Notion Review Database ID")
     notion_memory_db_id: str = Field(..., description="Notion Memory Database ID")
+    notion_evolution_db_id: str = Field(
+        default="",
+        description="Notion Evolution Database ID for tracking agent self-evolution"
+    )
 
     # Anthropic
     anthropic_api_key: str = Field(..., description="Anthropic API Key")
