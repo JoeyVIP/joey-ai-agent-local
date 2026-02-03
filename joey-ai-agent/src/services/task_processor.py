@@ -86,7 +86,8 @@ class TaskProcessor:
         self,
         user_input: str,
         source: str = "line",
-        reply_token: Optional[str] = None
+        reply_token: Optional[str] = None,
+        page_content: str = None
     ) -> None:
         """
         Main task processing flow:
@@ -109,7 +110,8 @@ class TaskProcessor:
             inbox_task_id = await notion_service.create_inbox_task(
                 title=title,
                 raw_input=user_input,
-                source=source
+                source=source,
+                page_content=page_content
             )
             logger.info(f"Inbox task created: {inbox_task_id}")
 

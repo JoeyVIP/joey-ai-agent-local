@@ -32,12 +32,18 @@ AUTHORIZED_USERS = {
 }
 
 
-async def process_message_background(user_input: str, user_id: str, user_name: str):
+async def process_message_background(
+    user_input: str,
+    user_id: str,
+    user_name: str,
+    page_content: str = None
+):
     """Background task to process LINE message."""
     try:
         await task_processor.process_task(
             user_input=user_input,
-            source="line"
+            source="line",
+            page_content=page_content
         )
     except Exception as e:
         logger.error(f"Background task failed: {e}", exc_info=True)
@@ -109,8 +115,8 @@ async def handle_file_message(event: dict, reply_token: str, user_id: str, backg
         except UnicodeDecodeError:
             text_content = file_content.decode('utf-8', errors='replace')
 
-        # 組合任務輸入
-        user_input = f"📎 檔案：{file_name}\n\n{text_content}"
+        # RawInput 只存檔名，完整內容存到 page_content
+        user_input = f"📎 檔案：{file_name}"
 
         # 回覆確認訊息
         await line_service.reply_message(
@@ -122,12 +128,13 @@ async def handle_file_message(event: dict, reply_token: str, user_id: str, backg
         if user_id != ADMIN_USER_ID:
             await notify_admin(user_name, f"[檔案] {file_name}")
 
-        # 背景處理任務
+        # 背景處理任務（完整內容傳到 page_content）
         background_tasks.add_task(
             process_message_background,
             user_input=user_input,
             user_id=user_id,
-            user_name=user_name
+            user_name=user_name,
+            page_content=text_content
         )
 
     except Exception as e:
