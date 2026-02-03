@@ -3,11 +3,21 @@ import json
 import hashlib
 import hmac
 import base64
+from pathlib import Path
 from fastapi import APIRouter, Request, HTTPException, BackgroundTasks
 
 from src.services.line_service import line_service
 from src.services.task_processor import task_processor
 from src.config import settings
+from src.constants import (
+    LINE_MESSAGE_PREVIEW_LENGTH,
+    LINE_LOG_MESSAGE_LENGTH,
+    LINE_FILE_LOG_MESSAGE_LENGTH,
+    USER_IDS_LOG_FILENAME,
+)
+
+# 專案根目錄（從 src/api/ 往上兩層）
+PROJECT_ROOT = Path(__file__).parent.parent.parent
 
 logger = logging.getLogger(__name__)
 router = APIRouter(tags=["line"])
@@ -33,16 +43,102 @@ async def process_message_background(user_input: str, user_id: str, user_name: s
         logger.error(f"Background task failed: {e}", exc_info=True)
 
 
+# 支援的文字檔案類型
+SUPPORTED_TEXT_EXTENSIONS = {'.md', '.txt', '.json', '.yaml', '.yml', '.csv', '.xml', '.html'}
+
+
 async def notify_admin(user_name: str, user_input: str):
     """通知管理員有使用者提出請求"""
     try:
         # 截斷過長的訊息
-        preview = user_input[:200] + "..." if len(user_input) > 200 else user_input
+        preview = user_input[:LINE_MESSAGE_PREVIEW_LENGTH] + "..." if len(user_input) > LINE_MESSAGE_PREVIEW_LENGTH else user_input
         notification = f"📢 {user_name} 提出請求：\n\n{preview}"
         await line_service.push_to_joey(notification)
         logger.info(f"Admin notified about {user_name}'s request")
     except Exception as e:
         logger.error(f"Failed to notify admin: {e}")
+
+
+async def handle_file_message(event: dict, reply_token: str, user_id: str, background_tasks):
+    """處理檔案類型的 LINE 訊息"""
+    message = event.get("message", {})
+    file_name = message.get("fileName", "unknown")
+    file_size = message.get("fileSize", 0)
+    message_id = message.get("id")
+
+    logger.info(f"Received file from {user_id}: {file_name} ({file_size} bytes)")
+
+    # 檢查使用者授權
+    if user_id not in AUTHORIZED_USERS:
+        logger.warning(f"Unauthorized user tried to send file: {user_id}")
+        try:
+            await line_service.reply_message(
+                reply_token=reply_token,
+                message="抱歉，你目前沒有使用權限。請聯繫管理員。"
+            )
+        except Exception as e:
+            logger.error(f"Failed to send unauthorized reply: {e}")
+        return
+
+    user_name = AUTHORIZED_USERS[user_id]
+
+    # 檢查檔案副檔名
+    file_ext = Path(file_name).suffix.lower()
+    if file_ext not in SUPPORTED_TEXT_EXTENSIONS:
+        await line_service.reply_message(
+            reply_token=reply_token,
+            message=f"⚠️ 目前只支援文字檔案格式：{', '.join(sorted(SUPPORTED_TEXT_EXTENSIONS))}"
+        )
+        return
+
+    # 檢查檔案大小（限制 1MB）
+    if file_size > 1024 * 1024:
+        await line_service.reply_message(
+            reply_token=reply_token,
+            message="⚠️ 檔案太大，請限制在 1MB 以內。"
+        )
+        return
+
+    try:
+        # 下載檔案內容
+        file_content = await line_service.get_message_content(message_id)
+
+        # 解碼為文字
+        try:
+            text_content = file_content.decode('utf-8')
+        except UnicodeDecodeError:
+            text_content = file_content.decode('utf-8', errors='replace')
+
+        # 組合任務輸入
+        user_input = f"📎 檔案：{file_name}\n\n{text_content}"
+
+        # 回覆確認訊息
+        await line_service.reply_message(
+            reply_token=reply_token,
+            message=f"📎 收到檔案 {file_name}，{user_name}！處理中..."
+        )
+
+        # 如果不是管理員，通知管理員
+        if user_id != ADMIN_USER_ID:
+            await notify_admin(user_name, f"[檔案] {file_name}")
+
+        # 背景處理任務
+        background_tasks.add_task(
+            process_message_background,
+            user_input=user_input,
+            user_id=user_id,
+            user_name=user_name
+        )
+
+    except Exception as e:
+        logger.error(f"Failed to process file: {e}", exc_info=True)
+        try:
+            await line_service.reply_message(
+                reply_token=reply_token,
+                message=f"❌ 處理檔案時發生錯誤：{str(e)[:100]}"
+            )
+        except Exception:
+            pass
 
 
 @router.post("/webhook/line")
@@ -82,18 +178,28 @@ async def line_webhook(request: Request, background_tasks: BackgroundTasks):
     for event in events:
         if event.get("type") != "message":
             continue
-        if event.get("message", {}).get("type") != "text":
-            continue
 
+        message_type = event.get("message", {}).get("type")
         reply_token = event.get("replyToken")
         user_id = event.get("source", {}).get("userId")
+
+        # 處理檔案訊息
+        if message_type == "file":
+            await handle_file_message(event, reply_token, user_id, background_tasks)
+            continue
+
+        # 處理文字訊息
+        if message_type != "text":
+            continue
+
         user_input = event.get("message", {}).get("text", "")
 
         # Log all incoming messages
-        with open("/Users/joeyserver/joey-ai-agent/user_ids.log", "a") as f:
-            f.write(f"User ID: {user_id}, Message: {user_input[:100]}\n")
+        log_file = PROJECT_ROOT / USER_IDS_LOG_FILENAME
+        with open(log_file, "a") as f:
+            f.write(f"User ID: {user_id}, Message: {user_input[:LINE_FILE_LOG_MESSAGE_LENGTH]}\n")
 
-        logger.info(f"Received message from {user_id}: {user_input[:50]}...")
+        logger.info(f"Received message from {user_id}: {user_input[:LINE_LOG_MESSAGE_LENGTH]}...")
 
         if not user_input:
             continue
