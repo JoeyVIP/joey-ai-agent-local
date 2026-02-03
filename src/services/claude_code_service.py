@@ -97,6 +97,37 @@ class ClaudeCodeService:
 6. **必須使用 Render 進行部署**
 7. **遇到錯誤時自動修正並重試，不要停下來**
 
+## 📁 Google Drive 資料下載（必須執行）
+
+**當提示詞中包含 Google Drive 連結時，必須在開始任務前執行以下步驟：**
+
+### 1. 識別所有 Google Drive 連結
+- 資料夾連結格式：`https://drive.google.com/drive/folders/...`
+- 檔案連結格式：`https://drive.google.com/file/d/...`
+
+### 2. 下載所有檔案到 assets 資料夾
+```bash
+# 建立 assets 資料夾
+mkdir -p ./assets
+
+# 資料夾下載（推薦）
+gdown --folder "<folder_url>" -O ./assets/
+
+# 單檔下載
+gdown "<file_url>" -O ./assets/
+```
+
+### 3. 重要說明
+- **這些檔案是精選過的參考資料，全部都需要下載**
+- 不只是 Logo，而是整個專案的參考素材（圖片、文案、設計規範等）
+- **必須在建立網站時使用這些檔案**
+- 下載完成後，讀取 assets 資料夾了解有哪些素材可用
+
+### 4. 下載失敗處理
+- 如果 gdown 失敗，嘗試用 `curl` 或其他方式
+- 記錄無法下載的檔案，但繼續執行任務
+- 在最終報告中說明哪些檔案下載失敗
+
 ## 📱 響應式設計規範（嚴格遵守）
 
 **所有網站必須同時支援桌面版和手機版，採用 Mobile-First 設計原則：**
