@@ -126,9 +126,12 @@ class TaskProcessor:
             # Stage 1: Claude API Analysis (fast)
             # ============================================
             logger.info("Stage 1: Calling Claude API for task analysis...")
+            if page_content:
+                logger.info(f"傳遞 page_content 到 Claude API，長度: {len(page_content)} 字元")
             response = await claude_service.process_task(
                 user_input=user_input,
-                memories=memories
+                memories=memories,
+                page_content=page_content
             )
             logger.info(f"Claude response - difficulty: {response.difficulty}")
 
