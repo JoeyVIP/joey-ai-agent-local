@@ -246,17 +246,49 @@ pending → executing → verifying → completed
    - 到 Notion Evolution Database 查看所有進化記錄
    - 可追蹤失敗原因和回滾歷史
 
-## 部署流程（重要！）
+## 部署流程（重要！必須完整執行）
 
-當完成進化任務後，需要部署到 Mac mini：
+當完成進化任務後，**必須按照以下完整流程部署**：
 
-### 快速部署指令
+### 完整部署步驟
+
+#### Step 1: 推送到 GitHub
 ```bash
-# 1. 同步修改的檔案到 Mac mini
-rsync -avz "/Users/JoeyLiao/Joey's AI Agent /joey-ai-agent/src/" macmini-remote:~/joey-ai-agent/src/
+cd "/Users/JoeyLiao/Joey's AI Agent /joey-ai-agent"
+git add <修改的檔案>
+git commit -m "feat: 功能描述
 
-# 2. 重啟服務並驗證
-ssh macmini-remote "pkill -f 'uvicorn.*joey-ai-agent' && sleep 2 && cd ~/joey-ai-agent && nohup /usr/bin/python3 -m uvicorn src.main:app --host 0.0.0.0 --port 8000 > /tmp/agent.log 2>&1 & sleep 3 && curl -s http://localhost:8000/health"
+Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>"
+git push origin main
+```
+
+#### Step 2: 同步到 Mac mini
+```bash
+rsync -avz "/Users/JoeyLiao/Joey's AI Agent /joey-ai-agent/src/" macmini-remote:~/joey-ai-agent/src/
+```
+
+#### Step 3: 清除 Python 緩存（關鍵！）
+```bash
+ssh macmini-remote "find ~/joey-ai-agent -type d -name '__pycache__' -exec rm -rf {} + 2>/dev/null; find ~/joey-ai-agent -name '*.pyc' -delete 2>/dev/null"
+```
+
+> ⚠️ **這步非常重要！** Python 會緩存 .pyc 檔案，不清除的話服務可能繼續使用舊代碼。
+
+#### Step 4: 重啟服務
+```bash
+ssh macmini-remote "lsof -ti :8000 | xargs kill -9 2>/dev/null; sleep 3; cd ~/joey-ai-agent && /usr/bin/python3 -m uvicorn src.main:app --host 0.0.0.0 --port 8000 >> ~/joey-ai-agent.log 2>> ~/joey-ai-agent.error.log &"
+```
+
+#### Step 5: 驗證部署
+```bash
+ssh macmini-remote "sleep 4; curl -s http://localhost:8000/health"
+# 應該返回: {"status":"healthy"}
+```
+
+### 一鍵部署指令（合併 Step 2-5）
+```bash
+rsync -avz "/Users/JoeyLiao/Joey's AI Agent /joey-ai-agent/src/" macmini-remote:~/joey-ai-agent/src/ && \
+ssh macmini-remote "find ~/joey-ai-agent -type d -name '__pycache__' -exec rm -rf {} + 2>/dev/null; find ~/joey-ai-agent -name '*.pyc' -delete 2>/dev/null; lsof -ti :8000 | xargs kill -9 2>/dev/null; sleep 3; cd ~/joey-ai-agent && /usr/bin/python3 -m uvicorn src.main:app --host 0.0.0.0 --port 8000 >> ~/joey-ai-agent.log 2>> ~/joey-ai-agent.error.log & sleep 4; curl -s http://localhost:8000/health"
 ```
 
 ### SSH 連線資訊
@@ -264,11 +296,29 @@ ssh macmini-remote "pkill -f 'uvicorn.*joey-ai-agent' && sleep 2 && cd ~/joey-ai
 - **IP**: 100.116.178.96
 - **用戶**: joeyserver
 - **專案路徑**: `~/joey-ai-agent`
+- **日誌位置**: `~/joey-ai-agent.log` 和 `~/joey-ai-agent.error.log`
 
 ### 注意事項
 - 本地 repo: `joey-ai-agent-local.git`
 - Mac mini repo: `joey-ai-agent.git`
 - 兩個 repo 歷史不同步，使用 rsync 同步檔案更可靠
+- Mac mini 有自動重啟機制（透過 .zshrc），殺掉進程後會自動重啟
+- 如果服務異常，查看日誌：`ssh macmini-remote "tail -50 ~/joey-ai-agent.error.log"`
+
+### 常見問題
+
+#### 問題：部署後代碼沒有更新
+**原因**：Python 緩存（.pyc）沒有清除
+**解決**：執行 Step 3 清除緩存後重啟
+
+#### 問題：端口被佔用
+**解決**：`ssh macmini-remote "lsof -ti :8000 | xargs kill -9"`
+
+#### 問題：服務已讀不回
+**排查步驟**：
+1. 檢查健康狀態：`ssh macmini-remote "curl -s http://localhost:8000/health"`
+2. 查看錯誤日誌：`ssh macmini-remote "tail -30 ~/joey-ai-agent.error.log"`
+3. 確認進程存在：`ssh macmini-remote "ps aux | grep uvicorn | grep -v grep"`
 
 ---
 
