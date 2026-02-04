@@ -12,21 +12,38 @@
 
 ---
 
-## GitHub 素材庫使用方式
+## 素材下載方式（統一使用 Google Drive）
 
-### 素材庫位置
-所有專案素材統一存放於 GitHub：
-`https://github.com/JoeyVIP/joey-agent-assets`
+### 重要說明
 
-### 下載方式
-使用 `gh` CLI 下載專案資料夾：
+所有專案素材統一存放於 **Google Drive 公開資料夾**，使用 `gdown` 工具下載。
+
+> ⚠️ **不使用 GitHub 素材庫**（`joey-agent-assets` 已棄用）
+
+### 下載方法
+
 ```bash
-# 下載整個素材庫
-gh repo clone JoeyVIP/joey-agent-assets
+# 下載整個資料夾
+gdown --folder "https://drive.google.com/drive/folders/xxxxxx" -O ./assets
 
-# 或只下載特定專案資料夾
-# 先 clone，再進入對應資料夾
+# 下載單一檔案
+gdown "https://drive.google.com/uc?id=xxxxxx" -O ./filename.png
 ```
+
+### 成功條件
+
+| 項目 | 說明 |
+|------|------|
+| 工具 | `gdown` (Python 包，Mac mini 已安裝 v5.2.1) |
+| 認證 | **不需要** OAuth 認證 |
+| 必要條件 | Google Drive 連結必須設為「**任何人都可以查看**」 |
+
+### 成功案例
+
+- **space-cat-cafe-v5** (2026-02-03)：成功下載 3 個素材檔案
+  - catcoffeelogo.png (1MB)
+  - catcoffeemainv.png (8.5MB)
+  - catcoffee店內裝潢.png (2.8MB)
 
 ### 撰寫提示詞時的素材引用
 
@@ -34,13 +51,18 @@ gh repo clone JoeyVIP/joey-agent-assets
 
 **正確做法**
 ```markdown
-## 參考資料
+## 素材來源
+Google Drive：https://drive.google.com/drive/folders/xxxxxx?usp=sharing
 
-所有專案素材請從 GitHub 下載：
-https://github.com/JoeyVIP/joey-agent-assets/tree/main/{專案名稱}
-
-請下載資料夾內的所有檔案作為建站參考。
+請使用 gdown 下載素材到 ./assets 資料夾：
+gdown --folder "上述連結" -O ./assets
 ```
+
+### 注意事項
+
+- Google Drive MCP 目前**尚未成功配置授權**
+- 如需下載私有檔案，需另外設定 OAuth（待研究）
+- 公開連結是目前最可靠的方式
 
 ---
 
