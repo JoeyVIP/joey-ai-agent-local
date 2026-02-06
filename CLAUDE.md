@@ -93,9 +93,48 @@ joey-ai-agent/
 │   ├── submit_evolution.sh        # 提交進化任務
 │   └── templates/
 │       └── evolution-template.md  # 任務模板
+├── skills/
+│   ├── frontend-design/
+│   │   └── SKILL.md               # 官方前端設計 Skill (Level 3)
+│   └── templates/
+│       ├── base-guidelines.md     # 共用設計原則 (Level 3)
+│       ├── manufacturing.md       # 製造業模板 (Level 3)
+│       ├── restaurant.md          # 餐廳模板 (Level 3)
+│       ├── brand.md               # 品牌官網模板 (Level 3)
+│       └── corporate.md           # 企業官網模板 (Level 3)
 ├── web-frontend/                  # 前端程式碼 (Level 3)
 └── tasks/                         # 任務輸出 (Level 3)
 ```
+
+## 前端設計模板系統
+
+建站時使用的設計規範和行業模板，避免 generic AI 風格。
+
+### 檔案結構
+```
+skills/
+├── frontend-design/
+│   └── SKILL.md              # Claude 官方前端設計 Skill（禁止 generic 美學）
+└── templates/
+    ├── base-guidelines.md    # 共用設計原則（字體、配色、排版、動畫）
+    ├── manufacturing.md      # 代工廠/製造業模板
+    ├── restaurant.md         # 餐廳/咖啡廳模板
+    ├── brand.md              # 品牌官網模板
+    └── corporate.md          # 企業官網模板
+```
+
+### 使用方式
+1. `claude_code_service.py` 的 Prompt 已包含指示，會自動要求 Agent 載入對應模板
+2. 每個模板包含：美學方向、字體推薦、配色方案、頁面結構、CSS 範例、參考網站
+3. `base-guidelines.md` 包含所有行業共用的設計原則
+
+### 核心原則
+- **禁止 generic 字體**：Inter、Roboto、Arial、Helvetica
+- **禁止 AI slop 配色**：紫色漸層 + 白底
+- **必須使用 CSS Variables** 建立一致配色
+- **必須選擇大膽的美學方向**，而非中庸的「安全選擇」
+
+---
 
 ## 進化前置步驟：先找現成工具
 

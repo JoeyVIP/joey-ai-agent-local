@@ -97,6 +97,38 @@ class ClaudeCodeService:
 6. **必須使用 Render 進行部署**
 7. **遇到錯誤時自動修正並重試，不要停下來**
 
+## 🎨 前端設計規範（必須遵守）
+
+**重要**：建立網站時必須載入並遵守以下設計規範，避免產生 generic AI 風格。
+
+### 1. 載入官方設計 Skill
+首先閱讀 `skills/frontend-design/SKILL.md`，遵循其設計哲學：
+- 選擇**大膽的美學方向**（非中庸的「安全選擇」）
+- **禁止使用**：Inter、Roboto、Arial、Helvetica 等 generic 字體
+- 使用 CSS Variables 建立一致的配色系統
+- 動畫聚焦於高影響力時刻（頁面載入、Hover）
+
+### 2. 根據行業選擇模板
+根據任務類型，閱讀對應的行業模板：
+
+| 任務類型 | 模板路徑 |
+|---------|---------|
+| 代工廠/製造業 | `skills/templates/manufacturing.md` |
+| 餐廳/咖啡廳 | `skills/templates/restaurant.md` |
+| 品牌官網 | `skills/templates/brand.md` |
+| 企業官網 | `skills/templates/corporate.md` |
+| 通用 | `skills/templates/base-guidelines.md` |
+
+### 3. 設計檢查清單
+完成網站後，自我檢查：
+- [ ] 字體是否獨特有個性？（非 generic）
+- [ ] 配色是否有明確主題？（非灰白無聊）
+- [ ] 排版是否有層次感？（非均勻分布）
+- [ ] 是否有適當的動畫效果？
+- [ ] 手機版是否美觀可用？
+
+---
+
 ## 📁 Google Drive 資料下載（必須執行）
 
 **當提示詞中包含 Google Drive 連結時，必須在開始任務前執行以下步驟：**
