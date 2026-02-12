@@ -56,3 +56,12 @@ htmlcov/
 
 # Google credentials
 google/
+
+# Project backup media (large files)
+projects/*/backup/wp-content/
+projects/*/backup/screenshots/
+*.wpress
+rayter-backup/
+
+# Temporary screenshots
+rayter-*.png

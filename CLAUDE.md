@@ -1,6 +1,51 @@
 # Joey AI Agent - Claude Code 指南
 
-這是 Joey 的個人 AI Agent 系統，運行於 Mac mini 上。
+> **⚠️ 語言規定：所有輸出一律使用繁體中文。** 包含對話、文件、註解、commit message 說明等，除非是程式碼變數名稱或技術專有名詞。
+
+## 專案目的
+
+Joey AI Agent 是一套「AI 自動化建站服務」系統，核心功能：
+
+1. **接收客戶建站需求**（透過 LINE）→ 自動呼叫 Claude Code 生成網站
+2. **管理客戶專案**（`projects/` 資料夾）→ 每個客戶一個獨立專案目錄
+3. **自體進化**（進化協議）→ Agent 可以在安全框架下自我升級
+
+---
+
+## 架構決策：本 repo 與客戶網站的關係
+
+### 兩層架構
+
+| 層級 | 位置 | 內容 | 範例 |
+|------|------|------|------|
+| **管理層** | 本 repo `projects/` | 需求文件、content.md、備份、進度追蹤 | `projects/rayter/docs/` |
+| **程式碼層** | Mac mini 各自的 repo | 網站實際原始碼 | Mac mini 上的獨立 Git repo |
+
+### `projects/` 收錄範圍
+
+`projects/` 是**專案管理檔案櫃**，不限於 Agent 自動生成的網站。以下兩種專案都放這裡：
+
+| 類型 | 說明 | 範例 |
+|------|------|------|
+| **Agent 自動生成** | 透過 LINE → Agent 自動建站，之後在此管理後續修改 | 巨領企業、來電司康 |
+| **手動管理** | 非 Agent 生成，但透過 Claude Code 對話協作的建站/改版專案 | Rayter 醫材（WordPress 改版） |
+
+### 工作流程
+
+1. **Agent 自動建站**：客戶透過 LINE 發需求 → Agent 在 Mac mini 生成網站 → `projects/` 記錄管理資料
+2. **對話協作**：Joey 在 Claude Code 對話中指示 → 讀取 `projects/` 了解背景 → SSH 到 Mac mini 操作網站 repo
+3. **進度追蹤**：所有專案的文件、備份、進度統一在 `projects/` 管理
+
+### 目前客戶專案
+
+| 專案 | 類型 | 狀態 |
+|------|------|------|
+| **Rayter 醫材** | 手動管理（WordPress 改版） | Phase 1 備份完成，等待 Phase 0 前置作業 |
+| **來電司康** | Agent 生成測試案 | 內容準備完成 |
+| **巨領企業** | Agent 生成測試案 | 已完成（80+ 分） |
+| **酷思迪亞** | 手動管理（活動頁開發） | 開發計畫階段 |
+
+---
 
 ## 特殊觸發詞
 
@@ -9,6 +54,54 @@
 - 進入進化任務模式
 - 遵循自體進化協議
 - 根據安全分級制度執行修改
+
+---
+
+## Hostinger 預覽站（客戶網站部署平台）
+
+> **⚠️ 敏感資訊（API Token、Order ID、帳號）存放在 `.env`，不要寫在這裡。**
+
+### 環境變數（在 `.env` 中設定）
+
+```
+HOSTINGER_API_TOKEN=（API Token）
+HOSTINGER_ORDER_ID=（主機方案 ID）
+HOSTINGER_USERNAME=（主機帳號）
+```
+
+### API 使用方式
+
+```bash
+# 基本呼叫格式（Token 從環境變數讀取）：
+curl -H "Authorization: Bearer $HOSTINGER_API_TOKEN" \
+  "https://developers.hostinger.com/api/hosting/v1/websites"
+```
+
+- API 文件：https://developers.hostinger.com/
+- MCP Server：`hostinger-api-mcp@latest`
+
+### 常用 API 端點
+
+| 操作 | 方法 | 端點 |
+|------|------|------|
+| 列出所有網站 | GET | `/api/hosting/v1/websites` |
+| 建立新網站 | POST | `/api/hosting/v1/websites`（需帶 domain + order_id） |
+| 生成免費子網域 | POST | `/api/hosting/v1/domains/free-subdomains`（需帶 order_id） |
+| 列出資料中心 | GET | `/api/hosting/v1/datacenters?order_id=` |
+
+### 建立預覽站流程
+
+1. 生成免費子網域：`POST /api/hosting/v1/domains/free-subdomains`
+2. 在子網域上建立網站：`POST /api/hosting/v1/websites`
+3. 手動到 hPanel 安裝 WordPress（API 目前無此功能）
+4. 匯入 All-in-One WP Migration 備份
+
+### 注意事項
+
+- API Token 是敏感資訊，**只存在 `.env` 裡，不進 git**
+- WordPress 安裝目前需手動到 hPanel 操作（API 不支援自動安裝 WP）
+- 免費子網域名稱是隨機生成的，無法自訂
+- 主機位置建議選亞洲（新加坡或馬來西亞）
 
 ---
 
@@ -70,41 +163,69 @@ gdown --folder "上述連結" -O ./assets
 
 ```
 joey-ai-agent/
-├── src/
-│   ├── main.py              # FastAPI 入口 (Level 0)
-│   ├── config.py            # 環境變數設定 (Level 0)
+│
+├── projects/                      # ★ 客戶專案（每個客戶一個資料夾）
+│   ├── rayter/                    #   Rayter 醫材官網改版
+│   │   ├── docs/                  #     需求文件、content.md、進度追蹤
+│   │   ├── backup/                #     REST API JSON、截圖、媒體檔
+│   │   └── scripts/               #     備份腳本
+│   ├── enscon/                    #   來電司康原始素材
+│   ├── enscon-demo/               #   來電司康建站簡報/測試案
+│   ├── jiuhliing-cold-storage/    #   巨領企業建站測試案
+│   └── acousdea-sleep-fest/       #   酷思迪亞睡眠日活動
+│
+├── src/                           # ★ Agent 核心程式碼（運行於 Mac mini）
+│   ├── main.py                    #   FastAPI 入口 (Level 0)
+│   ├── config.py                  #   環境變數設定 (Level 0)
 │   ├── api/
-│   │   ├── line_webhook.py  # LINE Webhook (Level 1)
-│   │   └── health.py        # 健康檢查
+│   │   ├── line_webhook.py        #   LINE Webhook (Level 1)
+│   │   └── health.py              #   健康檢查
 │   ├── services/
-│   │   ├── notion_service.py      # Notion 整合 (Level 1)
-│   │   ├── task_processor.py      # 任務處理核心 (Level 1)
-│   │   ├── claude_service.py      # Claude API (Level 2)
-│   │   ├── claude_code_service.py # Claude Code 執行 (Level 1)
-│   │   └── line_service.py        # LINE 推送 (Level 2)
+│   │   ├── notion_service.py      #   Notion 整合 (Level 1)
+│   │   ├── task_processor.py      #   任務處理核心 (Level 1)
+│   │   ├── claude_service.py      #   Claude API (Level 2)
+│   │   ├── claude_code_service.py #   Claude Code 執行 (Level 1)
+│   │   └── line_service.py        #   LINE 推送 (Level 2)
 │   ├── models/
-│   │   └── claude_response.py     # 資料模型
+│   │   └── claude_response.py     #   資料模型
 │   └── prompts/
-│       └── system_prompt.md       # 系統提示詞 (Level 2)
-├── scripts/
-│   ├── evolution_controller.py    # 進化控制器
-│   └── create_evolution_task.py   # 建立進化任務
-├── agent-tasks/
-│   ├── submit_evolution.sh        # 提交進化任務
-│   └── templates/
-│       └── evolution-template.md  # 任務模板
-├── skills/
+│       └── system_prompt.md       #   系統提示詞 (Level 2)
+│
+├── skills/                        # ★ 建站設計模板系統
 │   ├── frontend-design/
-│   │   └── SKILL.md               # 官方前端設計 Skill (Level 3)
+│   │   └── SKILL.md               #   官方前端設計 Skill (Level 3)
 │   └── templates/
-│       ├── base-guidelines.md     # 共用設計原則 (Level 3)
-│       ├── manufacturing.md       # 製造業模板 (Level 3)
-│       ├── restaurant.md          # 餐廳模板 (Level 3)
-│       ├── brand.md               # 品牌官網模板 (Level 3)
-│       └── corporate.md           # 企業官網模板 (Level 3)
+│       ├── base-guidelines.md     #   共用設計原則 (Level 3)
+│       ├── manufacturing.md       #   製造業模板 (Level 3)
+│       ├── restaurant.md          #   餐廳模板 (Level 3)
+│       ├── brand.md               #   品牌官網模板 (Level 3)
+│       └── corporate.md           #   企業官網模板 (Level 3)
+│
+├── docs/                          # ★ 系統級文件（不放客戶專案）
+│   ├── 架構說明.md
+│   ├── 官網專案資料準備指南.md
+│   ├── 建站測試案製作流程（範例參考）.md
+│   └── ...
+│
+├── scripts/                       # 進化控制器等系統腳本
+│   ├── evolution_controller.py
+│   └── create_evolution_task.py
+├── agent-tasks/                   # 進化任務提交
+│   ├── submit_evolution.sh
+│   └── templates/
+│       └── evolution-template.md
 ├── web-frontend/                  # 前端程式碼 (Level 3)
 └── tasks/                         # 任務輸出 (Level 3)
 ```
+
+### 資料夾分工原則
+
+| 資料夾 | 放什麼 | 不放什麼 |
+|--------|--------|----------|
+| `projects/` | 客戶專案素材、文件、備份 | 系統程式碼 |
+| `docs/` | 系統級指南、架構說明、開發紀錄 | 客戶專案資料 |
+| `src/` | Agent 核心程式碼 | 文件、素材 |
+| `skills/templates/` | 行業建站模板 | 客戶資料 |
 
 ## 前端設計模板系統
 
@@ -190,7 +311,7 @@ skills/
 | **Level 0** | 禁止自動修改 | config.py, main.py, .env, plist |
 | **Level 1** | 核心邏輯，需快照 + 完整驗證 | line_webhook.py, task_processor.py, notion_service.py, claude_code_service.py |
 | **Level 2** | 安全修改，需快照 | system_prompt.md, claude_service.py, line_service.py |
-| **Level 3** | 自由修改 | web-frontend/, tasks/, agent-tasks/, docs/ |
+| **Level 3** | 自由修改 | web-frontend/, tasks/, agent-tasks/, docs/, projects/ |
 
 ### 進化流程
 

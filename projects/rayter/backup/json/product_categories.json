@@ -1,0 +1,116 @@
+[
+  {
+    "id": 16,
+    "name": "開刀房",
+    "slug": "%e9%96%8b%e5%88%80%e6%88%bf",
+    "description": "",
+    "parent": 0,
+    "count": 23,
+    "image": {
+      "id": 213,
+      "src": "https://rayter.tw/wp-content/uploads/2023/03/開刀房工作站分類圖.jpg",
+      "thumbnail": "https://rayter.tw/wp-content/uploads/2023/03/開刀房工作站分類圖-300x300.jpg",
+      "srcset": "https://rayter.tw/wp-content/uploads/2023/03/開刀房工作站分類圖.jpg 1000w, https://rayter.tw/wp-content/uploads/2023/03/開刀房工作站分類圖-300x300.jpg 300w, https://rayter.tw/wp-content/uploads/2023/03/開刀房工作站分類圖-150x150.jpg 150w, https://rayter.tw/wp-content/uploads/2023/03/開刀房工作站分類圖-768x768.jpg 768w, https://rayter.tw/wp-content/uploads/2023/03/開刀房工作站分類圖-600x600.jpg 600w, https://rayter.tw/wp-content/uploads/2023/03/開刀房工作站分類圖-100x100.jpg 100w",
+      "sizes": "(max-width: 1000px) 100vw, 1000px",
+      "name": "Modern equipment in operating room. Medical devices for neurosurgery.",
+      "alt": ""
+    },
+    "review_count": 0,
+    "permalink": "https://rayter.tw/product-category/%e9%96%8b%e5%88%80%e6%88%bf/"
+  },
+  {
+    "id": 22,
+    "name": "醫學美容",
+    "slug": "%e9%86%ab%e5%ad%b8%e7%be%8e%e5%ae%b9",
+    "description": "",
+    "parent": 0,
+    "count": 5,
+    "image": {
+      "id": 212,
+      "src": "https://rayter.tw/wp-content/uploads/2023/03/醫學美容分類圖.jpg",
+      "thumbnail": "https://rayter.tw/wp-content/uploads/2023/03/醫學美容分類圖-300x300.jpg",
+      "srcset": "https://rayter.tw/wp-content/uploads/2023/03/醫學美容分類圖.jpg 1000w, https://rayter.tw/wp-content/uploads/2023/03/醫學美容分類圖-300x300.jpg 300w, https://rayter.tw/wp-content/uploads/2023/03/醫學美容分類圖-150x150.jpg 150w, https://rayter.tw/wp-content/uploads/2023/03/醫學美容分類圖-768x768.jpg 768w, https://rayter.tw/wp-content/uploads/2023/03/醫學美容分類圖-600x600.jpg 600w, https://rayter.tw/wp-content/uploads/2023/03/醫學美容分類圖-100x100.jpg 100w",
+      "sizes": "(max-width: 1000px) 100vw, 1000px",
+      "name": "醫學美容(分類圖)",
+      "alt": ""
+    },
+    "review_count": 0,
+    "permalink": "https://rayter.tw/product-category/%e9%86%ab%e5%ad%b8%e7%be%8e%e5%ae%b9/"
+  },
+  {
+    "id": 17,
+    "name": "預防醫學",
+    "slug": "%e9%a0%90%e9%98%b2%e9%86%ab%e5%ad%b8",
+    "description": "",
+    "parent": 0,
+    "count": 3,
+    "image": {
+      "id": 207,
+      "src": "https://rayter.tw/wp-content/uploads/2023/03/預防醫學分類圖.jpg",
+      "thumbnail": "https://rayter.tw/wp-content/uploads/2023/03/預防醫學分類圖-300x300.jpg",
+      "srcset": "https://rayter.tw/wp-content/uploads/2023/03/預防醫學分類圖.jpg 1000w, https://rayter.tw/wp-content/uploads/2023/03/預防醫學分類圖-300x300.jpg 300w, https://rayter.tw/wp-content/uploads/2023/03/預防醫學分類圖-150x150.jpg 150w, https://rayter.tw/wp-content/uploads/2023/03/預防醫學分類圖-768x768.jpg 768w, https://rayter.tw/wp-content/uploads/2023/03/預防醫學分類圖-600x600.jpg 600w, https://rayter.tw/wp-content/uploads/2023/03/預防醫學分類圖-100x100.jpg 100w",
+      "sizes": "(max-width: 1000px) 100vw, 1000px",
+      "name": "預防醫學(分類圖)",
+      "alt": ""
+    },
+    "review_count": 0,
+    "permalink": "https://rayter.tw/product-category/%e9%a0%90%e9%98%b2%e9%86%ab%e5%ad%b8/"
+  },
+  {
+    "id": 18,
+    "name": "手術器械",
+    "slug": "%e6%89%8b%e8%a1%93%e5%99%a8%e6%a2%b0",
+    "description": "",
+    "parent": 0,
+    "count": 8,
+    "image": {
+      "id": 208,
+      "src": "https://rayter.tw/wp-content/uploads/2023/03/手術器械分類圖.jpg",
+      "thumbnail": "https://rayter.tw/wp-content/uploads/2023/03/手術器械分類圖-300x300.jpg",
+      "srcset": "https://rayter.tw/wp-content/uploads/2023/03/手術器械分類圖.jpg 1000w, https://rayter.tw/wp-content/uploads/2023/03/手術器械分類圖-300x300.jpg 300w, https://rayter.tw/wp-content/uploads/2023/03/手術器械分類圖-150x150.jpg 150w, https://rayter.tw/wp-content/uploads/2023/03/手術器械分類圖-768x768.jpg 768w, https://rayter.tw/wp-content/uploads/2023/03/手術器械分類圖-600x600.jpg 600w, https://rayter.tw/wp-content/uploads/2023/03/手術器械分類圖-100x100.jpg 100w",
+      "sizes": "(max-width: 1000px) 100vw, 1000px",
+      "name": "Dental steel instruments with copy space",
+      "alt": ""
+    },
+    "review_count": 0,
+    "permalink": "https://rayter.tw/product-category/%e6%89%8b%e8%a1%93%e5%99%a8%e6%a2%b0/"
+  },
+  {
+    "id": 20,
+    "name": "醫療耗材",
+    "slug": "%e9%86%ab%e7%99%82%e8%80%97%e6%9d%90",
+    "description": "",
+    "parent": 0,
+    "count": 3,
+    "image": {
+      "id": 210,
+      "src": "https://rayter.tw/wp-content/uploads/2023/03/醫療耗材分類圖.jpg",
+      "thumbnail": "https://rayter.tw/wp-content/uploads/2023/03/醫療耗材分類圖-300x300.jpg",
+      "srcset": "https://rayter.tw/wp-content/uploads/2023/03/醫療耗材分類圖.jpg 1000w, https://rayter.tw/wp-content/uploads/2023/03/醫療耗材分類圖-300x300.jpg 300w, https://rayter.tw/wp-content/uploads/2023/03/醫療耗材分類圖-150x150.jpg 150w, https://rayter.tw/wp-content/uploads/2023/03/醫療耗材分類圖-768x768.jpg 768w, https://rayter.tw/wp-content/uploads/2023/03/醫療耗材分類圖-600x600.jpg 600w, https://rayter.tw/wp-content/uploads/2023/03/醫療耗材分類圖-100x100.jpg 100w",
+      "sizes": "(max-width: 1000px) 100vw, 1000px",
+      "name": "醫療耗材(分類圖)",
+      "alt": ""
+    },
+    "review_count": 0,
+    "permalink": "https://rayter.tw/product-category/%e9%86%ab%e7%99%82%e8%80%97%e6%9d%90/"
+  },
+  {
+    "id": 19,
+    "name": "護理工作站",
+    "slug": "%e8%ad%b7%e7%90%86%e5%b7%a5%e4%bd%9c%e7%ab%99",
+    "description": "",
+    "parent": 0,
+    "count": 11,
+    "image": {
+      "id": 209,
+      "src": "https://rayter.tw/wp-content/uploads/2023/03/護理工作站分類圖.jpg",
+      "thumbnail": "https://rayter.tw/wp-content/uploads/2023/03/護理工作站分類圖-300x300.jpg",
+      "srcset": "https://rayter.tw/wp-content/uploads/2023/03/護理工作站分類圖.jpg 1000w, https://rayter.tw/wp-content/uploads/2023/03/護理工作站分類圖-300x300.jpg 300w, https://rayter.tw/wp-content/uploads/2023/03/護理工作站分類圖-150x150.jpg 150w, https://rayter.tw/wp-content/uploads/2023/03/護理工作站分類圖-768x768.jpg 768w, https://rayter.tw/wp-content/uploads/2023/03/護理工作站分類圖-600x600.jpg 600w, https://rayter.tw/wp-content/uploads/2023/03/護理工作站分類圖-100x100.jpg 100w",
+      "sizes": "(max-width: 1000px) 100vw, 1000px",
+      "name": "Bottle of salt water on the pillars in the hospital.",
+      "alt": ""
+    },
+    "review_count": 0,
+    "permalink": "https://rayter.tw/product-category/%e8%ad%b7%e7%90%86%e5%b7%a5%e4%bd%9c%e7%ab%99/"
+  }
+]

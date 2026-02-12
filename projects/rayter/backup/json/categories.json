@@ -1,0 +1,124 @@
+[
+  {
+    "id": 1,
+    "count": 1,
+    "description": "",
+    "link": "https://rayter.tw/category/uncategorized/",
+    "name": "未分類",
+    "slug": "uncategorized",
+    "taxonomy": "category",
+    "parent": 0,
+    "meta": [],
+    "yoast_head": "<!-- This site is optimized with the Yoast SEO Premium plugin v26.6 (Yoast SEO v26.6) - https://yoast.com/wordpress/plugins/seo/ -->\n<title>〈未分類 〉彙整頁面 - 雷特國際有限公司</title>\n<meta name=\"robots\" content=\"noindex, follow\" />\n<meta property=\"og:locale\" content=\"zh_TW\" />\n<meta property=\"og:type\" content=\"article\" />\n<meta property=\"og:title\" content=\"〈未分類 〉彙整頁面 - 雷特國際有限公司\" />\n<meta property=\"og:url\" content=\"https://rayter.tw/category/uncategorized/\" />\n<meta property=\"og:site_name\" content=\"雷特國際有限公司\" />\n<meta name=\"twitter:card\" content=\"summary_large_image\" />\n<script type=\"application/ld+json\" class=\"yoast-schema-graph\">{\"@context\":\"https://schema.org\",\"@graph\":[{\"@type\":\"CollectionPage\",\"@id\":\"https://rayter.tw/category/uncategorized/\",\"url\":\"https://rayter.tw/category/uncategorized/\",\"name\":\"〈未分類 〉彙整頁面 - 雷特國際有限公司\",\"isPartOf\":{\"@id\":\"https://rayter.tw/#website\"},\"inLanguage\":\"zh-TW\"},{\"@type\":\"WebSite\",\"@id\":\"https://rayter.tw/#website\",\"url\":\"https://rayter.tw/\",\"name\":\"雷特國際有限公司\",\"description\":\"雷特國際致力於提供專業的醫療銷售服務，銷售領域遍及手術房、醫學美容、預防醫學，供應各式醫療設備、手術器械，以及相關耗材。數年來已和眾多診所，以及數家醫院保持長期合作。提供最佳品質的產品與最專業的服務，是我們一直堅持的目標與初衷。\",\"publisher\":{\"@id\":\"https://rayter.tw/#organization\"},\"potentialAction\":[{\"@type\":\"SearchAction\",\"target\":{\"@type\":\"EntryPoint\",\"urlTemplate\":\"https://rayter.tw/?s={search_term_string}\"},\"query-input\":{\"@type\":\"PropertyValueSpecification\",\"valueRequired\":true,\"valueName\":\"search_term_string\"}}],\"inLanguage\":\"zh-TW\"},{\"@type\":\"Organization\",\"@id\":\"https://rayter.tw/#organization\",\"name\":\"雷特國際有限公司\",\"url\":\"https://rayter.tw/\",\"logo\":{\"@type\":\"ImageObject\",\"inLanguage\":\"zh-TW\",\"@id\":\"https://rayter.tw/#/schema/logo/image/\",\"url\":\"https://rayter.tw/wp-content/uploads/2023/02/456-04.png\",\"contentUrl\":\"https://rayter.tw/wp-content/uploads/2023/02/456-04.png\",\"width\":168,\"height\":159,\"caption\":\"雷特國際有限公司\"},\"image\":{\"@id\":\"https://rayter.tw/#/schema/logo/image/\"},\"sameAs\":[\"https://www.facebook.com/rayter.tw?locale=zh_TW\",\"https://www.instagram.com/rayter.tw/\"]}]}</script>\n<!-- / Yoast SEO Premium plugin. -->",
+    "yoast_head_json": {
+      "title": "〈未分類 〉彙整頁面 - 雷特國際有限公司",
+      "robots": {
+        "index": "noindex",
+        "follow": "follow"
+      },
+      "og_locale": "zh_TW",
+      "og_type": "article",
+      "og_title": "〈未分類 〉彙整頁面 - 雷特國際有限公司",
+      "og_url": "https://rayter.tw/category/uncategorized/",
+      "og_site_name": "雷特國際有限公司",
+      "twitter_card": "summary_large_image",
+      "schema": {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "CollectionPage",
+            "@id": "https://rayter.tw/category/uncategorized/",
+            "url": "https://rayter.tw/category/uncategorized/",
+            "name": "〈未分類 〉彙整頁面 - 雷特國際有限公司",
+            "isPartOf": {
+              "@id": "https://rayter.tw/#website"
+            },
+            "inLanguage": "zh-TW"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://rayter.tw/#website",
+            "url": "https://rayter.tw/",
+            "name": "雷特國際有限公司",
+            "description": "雷特國際致力於提供專業的醫療銷售服務，銷售領域遍及手術房、醫學美容、預防醫學，供應各式醫療設備、手術器械，以及相關耗材。數年來已和眾多診所，以及數家醫院保持長期合作。提供最佳品質的產品與最專業的服務，是我們一直堅持的目標與初衷。",
+            "publisher": {
+              "@id": "https://rayter.tw/#organization"
+            },
+            "potentialAction": [
+              {
+                "@type": "SearchAction",
+                "target": {
+                  "@type": "EntryPoint",
+                  "urlTemplate": "https://rayter.tw/?s={search_term_string}"
+                },
+                "query-input": {
+                  "@type": "PropertyValueSpecification",
+                  "valueRequired": true,
+                  "valueName": "search_term_string"
+                }
+              }
+            ],
+            "inLanguage": "zh-TW"
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://rayter.tw/#organization",
+            "name": "雷特國際有限公司",
+            "url": "https://rayter.tw/",
+            "logo": {
+              "@type": "ImageObject",
+              "inLanguage": "zh-TW",
+              "@id": "https://rayter.tw/#/schema/logo/image/",
+              "url": "https://rayter.tw/wp-content/uploads/2023/02/456-04.png",
+              "contentUrl": "https://rayter.tw/wp-content/uploads/2023/02/456-04.png",
+              "width": 168,
+              "height": 159,
+              "caption": "雷特國際有限公司"
+            },
+            "image": {
+              "@id": "https://rayter.tw/#/schema/logo/image/"
+            },
+            "sameAs": [
+              "https://www.facebook.com/rayter.tw?locale=zh_TW",
+              "https://www.instagram.com/rayter.tw/"
+            ]
+          }
+        ]
+      }
+    },
+    "_links": {
+      "self": [
+        {
+          "href": "https://rayter.tw/wp-json/wp/v2/categories/1",
+          "targetHints": {
+            "allow": [
+              "GET"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://rayter.tw/wp-json/wp/v2/categories"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://rayter.tw/wp-json/wp/v2/taxonomies/category"
+        }
+      ],
+      "wp:post_type": [
+        {
+          "href": "https://rayter.tw/wp-json/wp/v2/posts?categories=1"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
+  }
+]
