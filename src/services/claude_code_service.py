@@ -54,9 +54,11 @@ class ClaudeCodeService:
             dict with keys: success, output, folder_path, error
         """
         task_folder = self._create_task_folder(title)
+        skills_dir = self.project_dir / "skills"  # skills 絕對路徑，供 prompt 引用
         logger.info(f"Created task folder: {task_folder}")
 
         # Add automated execution prefix to prompt
+        # 使用 {SKILLS_DIR} 佔位符，稍後替換為實際路徑（避免 f-string 與 CSS 花括號衝突）
         automated_prefix = """[AUTOMATED EXECUTION MODE - RALPH WIGGUM LOOP]
 你正在以自動化模式執行任務。你有完整的檔案讀寫權限。
 
@@ -102,30 +104,50 @@ class ClaudeCodeService:
 **重要**：建立網站時必須載入並遵守以下設計規範，避免產生 generic AI 風格。
 
 ### 1. 載入官方設計 Skill
-首先閱讀 `skills/frontend-design/SKILL.md`，遵循其設計哲學：
+首先閱讀 `{SKILLS_DIR}/frontend-design/SKILL.md`，遵循其設計哲學：
 - 選擇**大膽的美學方向**（非中庸的「安全選擇」）
 - **禁止使用**：Inter、Roboto、Arial、Helvetica 等 generic 字體
 - 使用 CSS Variables 建立一致的配色系統
 - 動畫聚焦於高影響力時刻（頁面載入、Hover）
 
-### 2. 根據行業選擇模板
+### 2. 生成設計系統（UI/UX Pro Max — 必須執行）
+在開始建立網站前，**必須先執行以下指令**生成完整設計系統：
+
+```bash
+python3 {SKILLS_DIR}/ui-ux-pro-max/scripts/search.py "<用 2-3 個英文關鍵字描述專案類型>" --design-system -p "<專案名稱>"
+```
+
+範例：
+- 咖啡廳：`python3 {SKILLS_DIR}/ui-ux-pro-max/scripts/search.py "cafe coffee cozy" --design-system -p "Space Cat Cafe"`
+- 製造業：`python3 {SKILLS_DIR}/ui-ux-pro-max/scripts/search.py "manufacturing industrial factory" --design-system -p "Jiuhliing"`
+- 品牌官網：`python3 {SKILLS_DIR}/ui-ux-pro-max/scripts/search.py "brand luxury premium" --design-system -p "Brand Name"`
+
+**使用生成的設計系統**：嚴格按照輸出的配色、字體、風格指引來設計網站，確保一致性。
+
+### 3. 根據行業選擇模板
 根據任務類型，閱讀對應的行業模板：
 
 | 任務類型 | 模板路徑 |
 |---------|---------|
-| 代工廠/製造業 | `skills/templates/manufacturing.md` |
-| 餐廳/咖啡廳 | `skills/templates/restaurant.md` |
-| 品牌官網 | `skills/templates/brand.md` |
-| 企業官網 | `skills/templates/corporate.md` |
-| 通用 | `skills/templates/base-guidelines.md` |
+| 代工廠/製造業 | `{SKILLS_DIR}/templates/manufacturing.md` |
+| 餐廳/咖啡廳 | `{SKILLS_DIR}/templates/restaurant.md` |
+| 品牌官網 | `{SKILLS_DIR}/templates/brand.md` |
+| 企業官網 | `{SKILLS_DIR}/templates/corporate.md` |
+| 通用 | `{SKILLS_DIR}/templates/base-guidelines.md` |
 
-### 3. 設計檢查清單
+### 4. 設計檢查清單
 完成網站後，自我檢查：
 - [ ] 字體是否獨特有個性？（非 generic）
-- [ ] 配色是否有明確主題？（非灰白無聊）
+- [ ] 配色是否與設計系統一致？
 - [ ] 排版是否有層次感？（非均勻分布）
 - [ ] 是否有適當的動畫效果？
 - [ ] 手機版是否美觀可用？
+
+### 5. 品質驗證（Superpowers 方法論）
+完成網站後，使用系統化驗證方法：
+- **Systematic Debugging**：如果發現問題，先調查根因再修復，不要隨意嘗試
+- **Verification Before Completion**：在宣布完成前，逐項檢查所有功能和視覺效果
+- **迭代改進**：如果驗證不通過，分析問題 → 修正 → 重新驗證
 
 ---
 
@@ -391,6 +413,8 @@ NEXT_ACTION: [下一步要做什麼]
 現在開始執行以下任務：
 
 """
+        # 將佔位符替換為實際的 skills 絕對路徑
+        automated_prefix = automated_prefix.replace("{SKILLS_DIR}", str(skills_dir))
         full_prompt = automated_prefix + prompt
 
         # Write task.md

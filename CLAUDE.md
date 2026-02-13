@@ -191,9 +191,13 @@ joey-ai-agent/
 │   └── prompts/
 │       └── system_prompt.md       #   系統提示詞 (Level 2)
 │
-├── skills/                        # ★ 建站設計模板系統
+├── skills/                        # ★ 建站設計系統（三合一）
 │   ├── frontend-design/
 │   │   └── SKILL.md               #   官方前端設計 Skill (Level 3)
+│   ├── ui-ux-pro-max/             #   BM25 設計系統生成器 (Level 3)
+│   │   ├── SKILL.md               #     使用說明
+│   │   ├── scripts/               #     search.py, design_system.py, core.py
+│   │   └── data/                  #     50+ 風格、97 色盤、57 字體組合資料
 │   └── templates/
 │       ├── base-guidelines.md     #   共用設計原則 (Level 3)
 │       ├── manufacturing.md       #   製造業模板 (Level 3)
@@ -227,15 +231,30 @@ joey-ai-agent/
 | `src/` | Agent 核心程式碼 | 文件、素材 |
 | `skills/templates/` | 行業建站模板 | 客戶資料 |
 
-## 前端設計模板系統
+## 建站設計系統（三合一）
 
-建站時使用的設計規範和行業模板，避免 generic AI 風格。
+建站時使用的設計規範、自動生成工具和品質驗證方法，避免 generic AI 風格。
+
+### 三個 Skill 的角色
+
+| Skill | 功能 | 在 Agent 中的作用 |
+|-------|------|-----------------|
+| **Frontend Design** | 設計哲學與美學規範 | 避免 AI Slop，確保大膽、有個性的設計 |
+| **UI/UX Pro Max** | BM25 設計系統生成器 | 根據專案類型自動生成配色、字體、風格方案 |
+| **Superpowers** | 開發最佳實踐（TDD、除錯、驗證） | 系統化驗證流程，提升網站品質 |
 
 ### 檔案結構
 ```
 skills/
 ├── frontend-design/
 │   └── SKILL.md              # Claude 官方前端設計 Skill（禁止 generic 美學）
+├── ui-ux-pro-max/
+│   ├── SKILL.md              # BM25 設計系統生成器使用說明
+│   ├── scripts/
+│   │   ├── search.py         # 主程式：搜尋風格 + 生成設計系統
+│   │   ├── design_system.py  # 設計系統生成邏輯
+│   │   └── core.py           # BM25 搜尋核心
+│   └── data/                 # 50+ 風格、97 色盤、57 字體組合資料
 └── templates/
     ├── base-guidelines.md    # 共用設計原則（字體、配色、排版、動畫）
     ├── manufacturing.md      # 代工廠/製造業模板
@@ -245,15 +264,21 @@ skills/
 ```
 
 ### 使用方式
-1. `claude_code_service.py` 的 Prompt 已包含指示，會自動要求 Agent 載入對應模板
-2. 每個模板包含：美學方向、字體推薦、配色方案、頁面結構、CSS 範例、參考網站
-3. `base-guidelines.md` 包含所有行業共用的設計原則
+1. `claude_code_service.py` 的 Prompt 已包含指示，會自動要求 Agent：
+   - 載入 Frontend Design Skill 設計哲學
+   - 執行 UI/UX Pro Max `search.py` 生成設計系統
+   - 根據行業選擇對應模板
+   - 完成後使用 Superpowers 方法論驗證品質
+2. Prompt 中使用 `{SKILLS_DIR}` 佔位符，在執行時替換為 skills/ 的絕對路徑
+3. Superpowers plugin 已安裝在 `~/.claude/plugins/repos/superpowers/`
 
 ### 核心原則
 - **禁止 generic 字體**：Inter、Roboto、Arial、Helvetica
 - **禁止 AI slop 配色**：紫色漸層 + 白底
 - **必須使用 CSS Variables** 建立一致配色
 - **必須選擇大膽的美學方向**，而非中庸的「安全選擇」
+- **必須先生成設計系統**再開始建站（UI/UX Pro Max）
+- **完成後必須系統化驗證**（Superpowers 方法論）
 
 ---
 
@@ -471,6 +496,7 @@ git push origin main
 #### Step 2: 同步到 Mac mini
 ```bash
 rsync -avz "/Users/JoeyLiao/Joey's AI Agent /joey-ai-agent/src/" macmini-remote:~/joey-ai-agent/src/
+rsync -avz "/Users/JoeyLiao/Joey's AI Agent /joey-ai-agent/skills/" macmini-remote:~/joey-ai-agent/skills/
 ```
 
 #### Step 3: 清除 Python 緩存（關鍵！）
@@ -494,6 +520,7 @@ ssh macmini-remote "sleep 4; curl -s http://localhost:8000/health"
 ### 一鍵部署指令（合併 Step 2-5）
 ```bash
 rsync -avz "/Users/JoeyLiao/Joey's AI Agent /joey-ai-agent/src/" macmini-remote:~/joey-ai-agent/src/ && \
+rsync -avz "/Users/JoeyLiao/Joey's AI Agent /joey-ai-agent/skills/" macmini-remote:~/joey-ai-agent/skills/ && \
 ssh macmini-remote "find ~/joey-ai-agent -type d -name '__pycache__' -exec rm -rf {} + 2>/dev/null; find ~/joey-ai-agent -name '*.pyc' -delete 2>/dev/null; lsof -ti :8000 | xargs kill -9 2>/dev/null; sleep 3; cd ~/joey-ai-agent && /usr/bin/python3 -m uvicorn src.main:app --host 0.0.0.0 --port 8000 >> ~/joey-ai-agent.log 2>> ~/joey-ai-agent.error.log & sleep 4; curl -s http://localhost:8000/health"
 ```
 
